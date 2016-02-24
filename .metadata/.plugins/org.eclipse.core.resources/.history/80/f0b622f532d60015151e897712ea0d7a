@@ -1,0 +1,66 @@
+package UDPserverCalculatorSimple;
+
+import java.io.*;
+import java.net.*;
+import java.util.Scanner;
+
+public class Client {
+	
+	public static void main(String[] args) throws IOException {
+		//BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+		int port;
+		int option = 0;
+
+		Scanner keyboard = new Scanner(System.in);
+
+		if (args.length < 2) {
+			System.out.println("Sintaxis de llamada: java EcoCliente <host> <puerto>");
+			System.exit(-1);
+		}
+		port = Integer.valueOf(args[1]).intValue();
+
+		ClientProxy proxy = new ClientProxy(args[0], port);
+		proxy.init();
+		
+		do {
+			System.out.println("Choose option:");
+			System.out.println("1.- GCD of 2 numbers");
+			System.out.println("2.- Factorial of a number");
+			System.out.println("3.- End connection");
+			option = keyboard.nextInt();
+			keyboard.nextLine();
+
+			switch (option) {
+			case 1:
+				System.out.print("First number: ");
+				int num1 = keyboard.nextInt();
+				keyboard.nextLine();
+				System.out.print("Second number: ");
+				int num2 = keyboard.nextInt();
+				keyboard.nextLine();
+
+				proxy.write(2, num1, num2);
+
+				System.out.println("Answer of GCD: " + proxy.read());
+				break;
+			case 2:
+				System.out.print("Number: ");
+				int num = keyboard.nextInt();
+				keyboard.nextLine();
+
+				proxy.write(3, num);
+
+				System.out.println("Answer of factorial: " + proxy.read());
+				break;
+			case 3:
+				proxy.end();
+				break;
+			}
+
+		} while (option != 0);
+
+		proxy.close();
+		stdIn.close();
+
+	}
+}

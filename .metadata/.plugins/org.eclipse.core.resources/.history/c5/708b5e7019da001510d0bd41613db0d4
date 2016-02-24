@@ -1,0 +1,43 @@
+package FTPserverSimple;
+
+import java.io.*;
+import java.net.*;
+import java.util.Scanner;
+
+public class Client {
+	
+	public static void main(String[] args) throws IOException {
+		Socket sock = null;
+		PrintWriter out = null;
+		String str;
+		BufferedReader in = null;
+		BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+		int port;
+		int option = 0;
+
+		Scanner keyboard = new Scanner(System.in);
+
+		if (args.length < 2) {
+			System.out.println("Sintaxis de llamada: java EcoCliente <host> <puerto>");
+			System.exit(-1);
+		}
+		port = Integer.valueOf(args[1]).intValue();
+
+		ClientProxy proxy = new ClientProxy(args[0], port);
+
+		System.out.println("File name: ");
+		String path = keyboard.nextLine();
+		
+		proxy.ask(path);
+		
+		File file = new File(path);
+		proxy.recive(file);
+		
+		if (file == null) System.err.println("Something has gone wrong");
+		else System.out.println("File copyed");
+
+		proxy.close();
+		stdIn.close();
+
+	}
+}
