@@ -43,9 +43,11 @@ public class ClientProxy {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		BufferedOutputStream bs = new BufferedOutputStream(fs);
+		
+		System.out.println("Starting to recive file");
 		
 		while (!end) {
+			System.out.println("Reading line");
 			try {
 				line = in.readLine();
 				if (line == null) {
@@ -57,12 +59,12 @@ public class ClientProxy {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			System.out.println("Recived line: " + line);
 			byte[] bytes = processLine(line);
 			if (bytes != null) {
 				if (bytes.length > 1) {
 					try {
-						bs.write(bytes);
+						fs.write(bytes);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

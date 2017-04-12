@@ -22,20 +22,13 @@ public class Client {
 
 		ClientProxy proxy = new ClientProxy(args[0], port);
 
-		System.out.println("File name: ");
-		String path = keyboard.nextLine();
+		System.out.println("Source file name: ");
+		String sourcePath = keyboard.nextLine();
 		
-		proxy.ask(path);
+		System.out.println("New path name: ");
+		String newPath = keyboard.nextLine();
 		
-		String[] comp = path.split("/");
-		
-		comp[comp.length - 1] = "copy " + System.currentTimeMillis() + ".txt";
-		
-		String newPath = new String();
-		
-		for (int i = 0; i < comp.length; i++) {
-			newPath = newPath.concat(comp[i]);
-		}
+		proxy.ask(sourcePath);
 		
 		File file = new File(newPath);
 		proxy.recive(file);

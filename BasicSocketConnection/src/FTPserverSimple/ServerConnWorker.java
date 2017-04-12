@@ -36,11 +36,11 @@ public class ServerConnWorker implements Runnable {
 		int b = 0;
 		
 		int packetSize = 28;
-		long numPacket = fileLength/packetSize;
+		int numPacket = (int) (fileLength/packetSize);
+		if (fileLength%packetSize != 0) numPacket++;
 		
 		System.out.println("Starting to send file");
-		for (long i = 0; i < numPacket; i++) {
-			System.out.println("Sending packet " + i + "/" + numPacket);
+		for (int i = 0; i < numPacket; i++) {
 			byte[] bytes = new byte[packetSize + 4];
 			bytes[0] = '$';
 			bytes[1] = (byte) (numPacket - i);
@@ -58,13 +58,14 @@ public class ServerConnWorker implements Runnable {
 					String line = new String(bytes, 0, a + 1);
 					System.out.println("Sending last packet: " + line);
 					proxy.send(line);
+					return;
 				} else {
 					bytes[a] = (byte) b;
 				}
 			}
 			
 			String line = new String(bytes, 0, packetSize + 4);
-			System.out.println("Sending packet: " + line);
+			System.out.println("Sending packet " + i + "/" + numPacket + ": " + line);
 			proxy.send(line);
 		}
 		

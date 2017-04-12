@@ -1,0 +1,39 @@
+package exercise1;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+public class Worker extends Thread {
+
+	protected InputStream in;
+	protected OutputStream out;
+	String name;
+	boolean working;
+	
+	public Worker (String name, InputStream in, OutputStream out) {
+		this.in = in;
+		this.out = out;
+	}
+	
+	public void run () {
+		int i = 0;
+		
+		while (working) {
+		
+			try {
+				i = in.read();
+				out.write(i);
+				out.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			System.out.println(name + " transmits byte " + (byte) i);
+			
+		}
+		
+		System.out.println(name + " stops working");
+	}
+}

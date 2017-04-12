@@ -47,6 +47,7 @@ public class ServerProxy {
 
 	public void send(String line) {
 		out.write(line);
+		out.flush();
 	}
 
 }
